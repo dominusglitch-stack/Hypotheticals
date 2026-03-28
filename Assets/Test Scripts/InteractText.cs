@@ -89,6 +89,7 @@ public class InteractText : MonoBehaviour
                             else
                             {
                                 objA = hit.transform.gameObject.GetComponent<ObjectAttributes>();
+                                objB = hit.transform.gameObject.GetComponent<CaseSets>();
 
                                 SpawnText(hit.transform.gameObject);
 
