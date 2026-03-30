@@ -28,7 +28,7 @@ public class ObjectAttributes : MonoBehaviour
     {
         if (objSize <= 7f)
             objSizeType = sizeTypes.Small;
-        else if (objSize <= 15f)
+        else if (objSize <= 13f)
             objSizeType = sizeTypes.Medium;
         else
             objSizeType = sizeTypes.Large;

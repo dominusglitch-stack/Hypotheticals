@@ -100,7 +100,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void SetCaseSeed(int seed)
     {
-        if(seed == 357764661)
+        if(seed == 348486610)
         {
             caseSeed.text = "Case Seed:\nTutorial";
         }

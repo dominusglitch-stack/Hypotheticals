@@ -58,6 +58,7 @@ public class CaseGenerator : MonoBehaviour
     public string witnessWallText = "None";
     public string weaponText;
     public TextMeshProUGUI[] boardTexts;
+    public TextMeshProUGUI wallTextCaption; 
     public GameObject[] winOrLoseText;
 
     public bool caseSolvedStarted = false;
@@ -86,6 +87,7 @@ public class CaseGenerator : MonoBehaviour
     public GameObject[] weaponsToCheck;
     public GameObject[] locationsToCheck;
     public GameObject[] witnessesToCheck;
+    public List<GameObject> updateWitnesses = new List<GameObject>();
     public List<GameObject> allItemsToCheck = new List<GameObject>();
     public List<int>[] solutionNumbers;
     public List<bool>[] solutionActivity;
@@ -164,8 +166,8 @@ public class CaseGenerator : MonoBehaviour
 
             if(SettingsScript.instance.tutorialMode)
             {
-                PlayerPrefs.SetInt("caseSeed", 357764661);
-                seed = 357764661;
+                PlayerPrefs.SetInt("caseSeed", 348486610);
+                seed = 348486610;
                 PlayerPrefs.SetInt("hasBeatenThisSeed", 0);
                 Random.InitState(seed);
             }
@@ -189,8 +191,8 @@ public class CaseGenerator : MonoBehaviour
         {
             if (SettingsScript.instance.tutorialMode)
             {
-                PlayerPrefs.SetInt("caseSeed", 357764661);
-                seed = 357764661;
+                PlayerPrefs.SetInt("caseSeed", 348486610);
+                seed = 348486610;
                 PlayerPrefs.SetInt("hasBeatenThisSeed", 0);
                 Random.InitState(seed);
             }
@@ -992,7 +994,7 @@ public class CaseGenerator : MonoBehaviour
         {
             if ((int)check.objSizeType == ((int)victimSeverity))
             {
-                //Debug.Log(weaponText + " " + check.objSizeType.ToString() + " &  Victim Wound is " + victimSeverity);
+                //Debug.Log(weaponText + " is " + check.objSizeType.ToString() + " &  Victim Wound is " + victimSeverity);
                 cSize = true;
                 boardTriggers[0].correctWeapon = check.gameObject;
                 boardTriggers[0].tempWeapon = null;
@@ -1012,6 +1014,17 @@ public class CaseGenerator : MonoBehaviour
                 {
                     if ((int)check.objSizeType == ((int)weaponSizeTypes[0]) || (int)check.objSizeType == ((int)weaponSizeTypes[1]))
                     {
+                        /*
+                        if ((int)check.objSizeType == ((int)weaponSizeTypes[0]))
+                        {
+                            Debug.Log(weaponText + " is " + check.objSizeType.ToString() + " &  Witness Wound is " + weaponSizeTypes[0]);
+                        }
+                        else
+                        {
+                            Debug.Log(weaponText + " is " + check.objSizeType.ToString() + " &  Witness Wound is " + weaponSizeTypes[1]);
+                        }
+                        */
+                        
                         cSize = true;
                         boardTriggers[0].correctWeapon = check.gameObject;
                         boardTriggers[0].tempWeapon = null;
@@ -1027,6 +1040,8 @@ public class CaseGenerator : MonoBehaviour
                 {
                     if ((int)check.objSizeType == ((int)weaponSizeTypes[0]))
                     {
+                        //Debug.Log(weaponText + " is " + check.objSizeType.ToString() + " &  Witness Wound is " + weaponSizeTypes[0]);
+
                         cSize = true;
                         boardTriggers[0].correctWeapon = check.gameObject;
                         boardTriggers[0].tempWeapon = null;
@@ -1042,6 +1057,8 @@ public class CaseGenerator : MonoBehaviour
             }
             else
             {
+                //Debug.Log("Weapon size types is null");
+
                 cSize = true;
                 boardTriggers[0].correctWeapon = check.gameObject;
                 boardTriggers[0].tempWeapon = null;
@@ -1107,7 +1124,7 @@ public class CaseGenerator : MonoBehaviour
                         {
                             if (weaponColorTypes.Length == 1)
                             {
-                                if ((int)check.objColorTypes[i] == ((int)weaponColorTypes[0]))
+                                if ((int)check.objColorTypes[i] == ((int)weaponColorTypes[0]) && weaponColorTypes[0] != wColorTypes.None)
                                 {
                                     cColor[c] = true;
 
@@ -1119,10 +1136,16 @@ public class CaseGenerator : MonoBehaviour
                                 {
                                     cColor[c] = false;
                                 }
+
+                                if (weaponColorTypes[0] == wColorTypes.None)
+                                {
+                                    cColor[c] = true;
+                                    break;
+                                }
                             }
                             else
                             {
-                                if ((int)check.objColorTypes[i] == ((int)weaponColorTypes[c]))
+                                if ((int)check.objColorTypes[i] == ((int)weaponColorTypes[c]) && weaponColorTypes[c] != wColorTypes.None)
                                 {
                                     cColor[c] = true;
 
@@ -1133,6 +1156,12 @@ public class CaseGenerator : MonoBehaviour
                                 else
                                 {
                                     cColor[c] = false;
+                                }
+
+                                if (weaponColorTypes[c] == wColorTypes.None)
+                                {
+                                    cColor[c] = true;
+                                    break;
                                 }
                             }
                         }
@@ -1148,7 +1177,7 @@ public class CaseGenerator : MonoBehaviour
                         {
                             if (weaponColorTypes.Length == 1)
                             {
-                                if ((int)check.objColorTypes[i] == ((int)weaponColorTypes[0]))
+                                if ((int)check.objColorTypes[i] == ((int)weaponColorTypes[0]) && weaponColorTypes[0] != wColorTypes.None)
                                 {
                                     cColor[c] = true;
 
@@ -1160,10 +1189,16 @@ public class CaseGenerator : MonoBehaviour
                                 {
                                     cColor[c] = false;
                                 }
+
+                                if (weaponColorTypes[0] == wColorTypes.None)
+                                {
+                                    cColor[c] = true;
+                                    break;
+                                }
                             }
                             else
                             {
-                                if ((int)check.objColorTypes[i] == ((int)weaponColorTypes[c]))
+                                if ((int)check.objColorTypes[i] == ((int)weaponColorTypes[c]) && weaponColorTypes[c] != wColorTypes.None)
                                 {
                                     cColor[c] = true;
 
@@ -1174,6 +1209,12 @@ public class CaseGenerator : MonoBehaviour
                                 else
                                 {
                                     cColor[c] = false;
+                                }
+
+                                if (weaponColorTypes[c] == wColorTypes.None)
+                                {
+                                    cColor[c] = true;
+                                    break;
                                 }
                             }
 
@@ -1187,7 +1228,7 @@ public class CaseGenerator : MonoBehaviour
             {
                 if (weaponColorTypes.Length == 1)
                 {
-                    if ((int)check.objColorTypes[0] == ((int)weaponColorTypes[0]))
+                    if ((int)check.objColorTypes[0] == ((int)weaponColorTypes[0]) && weaponColorTypes[0] != wColorTypes.None)
                     {
                         cColorSingle = true;
                         boardTriggers[0].correctWeapon = check.gameObject;
@@ -1199,6 +1240,13 @@ public class CaseGenerator : MonoBehaviour
                         boardTriggers[0].correctWeapon = null;
                         boardTriggers[0].tempWeapon = check.gameObject;
                     }
+
+                    if (weaponColorTypes[0] == wColorTypes.None)
+                    {
+                        cColorSingle = true;
+                        boardTriggers[0].correctWeapon = check.gameObject;
+                        boardTriggers[0].tempWeapon = null;
+                    }
                 }
                 else
                 {
@@ -1208,13 +1256,18 @@ public class CaseGenerator : MonoBehaviour
                         cColor[1] = false;
                         for (int w = 0; w < weaponColorTypes.Length; w++)
                         {
-                            if ((int)check.objColorTypes[0] == ((int)weaponColorTypes[w]))
+                            if ((int)check.objColorTypes[0] == ((int)weaponColorTypes[w]) && weaponColorTypes[w] != wColorTypes.None)
                             {
                                 cColor[w] = true;
                             }
                             else
                             {
                                 cColor[w] = false;
+                            }
+
+                            if (weaponColorTypes[w] == wColorTypes.None)
+                            {
+                                cColor[w] = true;
                             }
                         }
                     }
@@ -1223,13 +1276,18 @@ public class CaseGenerator : MonoBehaviour
                         cColor = new bool[2];
                         for (int w = 0; w < weaponColorTypes.Length; w++)
                         {
-                            if ((int)check.objColorTypes[0] == ((int)weaponColorTypes[w]))
+                            if ((int)check.objColorTypes[0] == ((int)weaponColorTypes[w]) && weaponColorTypes[0] != wColorTypes.None)
                             {
                                 cColor[w] = true;
                             }
                             else
                             {
                                 cColor[w] = false;
+                            }
+
+                            if (weaponColorTypes[w] == wColorTypes.None)
+                            {
+                                cColor[w] = true;
                             }
                         }
                     }
@@ -1539,7 +1597,7 @@ public class CaseGenerator : MonoBehaviour
                         {
                             int counter = 0;
                             bool contradictory = false;
-                            weaponSizeTypes = new wSizeTypes[check.cweaponSizeTypes.Length];
+                            weaponSizeTypes = new wSizeTypes[1];
                             foreach (CaseSets.cwSizeTypes size in check.cweaponSizeTypes)
                             {
                                 weaponSizeTypes[counter] = (wSizeTypes)size;
@@ -1561,6 +1619,7 @@ public class CaseGenerator : MonoBehaviour
                                 weaponColorTypes = null;
                                 weaponSizeTypes = null;
                                 cWitness = false;
+                                cColor = null;
                                 boardTriggers[2].correctWitness = null;
                             }
                             else
@@ -1601,13 +1660,18 @@ public class CaseGenerator : MonoBehaviour
                         {
                             int counter = 0;
                             bool contradictory = false;
-                            weaponSizeTypes = new wSizeTypes[check.cweaponSizeTypes.Length];
+                            weaponSizeTypes = new wSizeTypes[2];
+
+                            //string debugSize = "";
+                            //string debugColor = "";
+
                             foreach (CaseSets.cwSizeTypes size in check.cweaponSizeTypes)
                             {
                                 weaponSizeTypes[counter] = (wSizeTypes)size;
 
                                 if (victimSeverity != woundSeverity.None && weaponSizeTypes[counter] != wSizeTypes.None)
                                 {
+                                    //debugSize = $"Witness {counter} saw size {weaponSizeTypes[counter]}";
                                     if (weaponSizeTypes[counter] != (wSizeTypes)victimSeverity)
                                     {
                                         contradictory = true;
@@ -1615,20 +1679,6 @@ public class CaseGenerator : MonoBehaviour
                                 }
 
                                 counter++;
-                            }
-
-                            if (contradictory)
-                            {
-                                witnesses = null;
-                                weaponColorTypes = null;
-                                weaponSizeTypes = null;
-                                cWitness = false;
-                                boardTriggers[2].correctWitness = null;
-                            }
-                            else
-                            {
-                                cWitness = true;
-                                boardTriggers[2].correctWitness = witnessObj;
                             }
 
                             if (check.cweaponColorTypes != null)
@@ -1641,19 +1691,56 @@ public class CaseGenerator : MonoBehaviour
                                 {
                                     weaponColorTypes[counter] = (wColorTypes)color;
 
+                                    /*
+                                    if (weaponColorTypes[counter] != wColorTypes.None)
+                                    {
+                                        debugColor = $"Witness {counter} saw color {weaponColorTypes[counter]}";
+                                    }
+                                    */
+
                                     counter++;
                                 }
 
-                                cWitness = true;
-                                boardTriggers[2].correctWitness = witnessObj;
+                                //cWitness = true;
+                                //boardTriggers[2].correctWitness = witnessObj;
                             }
                             else
                             {
+                                //weaponColorTypes = null;
+                                //weaponSizeTypes = null;
+                                //cColor = null;
+                                //cWitness = true;
+                                //boardTriggers[2].correctWitness = witnessObj;
+                            }
+
+                            if (contradictory)
+                            {
+                                /*
+                                if(debugSize != "" && debugColor != "")
+                                {
+                                    Debug.Log($"{debugSize} and {debugColor} is contradictory");
+                                }
+                                */
+                        
+                                witnesses = null;
                                 weaponColorTypes = null;
                                 weaponSizeTypes = null;
+                                cWitness = false;
                                 cColor = null;
+                                boardTriggers[2].correctWitness = null;
+                            }
+                            else
+                            {
+                                /*
+                                if (debugSize != "" && debugColor != "")
+                                {
+                                    Debug.Log($"{debugSize} and {debugColor}");
+                                }
+                                */
+
                                 cWitness = true;
                                 boardTriggers[2].correctWitness = witnessObj;
+                                //Debug.Log("Weapon Size is not null");
                             }
                         }
                         else
@@ -1954,6 +2041,22 @@ public class CaseGenerator : MonoBehaviour
             return false;
         }
 
+        /*
+        bool[] debugList = { cSize, cDamage, IsColorTrue(), cLocation, cWitness };
+        string[] debugName = { "cSize", "cDamage", "IsColorTrue()", "cLocation", "cWitness" };
+
+        int counter = 0;
+        foreach (bool debug in debugList)
+        {
+            if (!debug)
+            {
+                Debug.Log("Case is not solved because " + debugName[counter] + " is not true");
+            }
+
+            counter++;
+        }
+        */
+
         return false;
     }
 
@@ -2003,8 +2106,9 @@ public class CaseGenerator : MonoBehaviour
 
                                 caseSolutionCount++;
 
-                                /*
+                                
                                 //Debug.Log("Case " + (cas + 1) + " can be solved with: " + allItemsToCheck.IndexOf(weaponsToCheck[wep]) + ", " + allItemsToCheck.IndexOf(witnessesToCheck[wit]) + ", " + allItemsToCheck.IndexOf(locationsToCheck[loc]));
+                                /*
                                 string debugCaseTextW = witnessesToCheck[wit].GetComponent<CaseSets>().caseTextDescription[0];
                                 if (witnessesToCheck[wit].GetComponent<CaseSets>().caseTextDescription.Length == 2)
                                 {
@@ -2104,9 +2208,89 @@ public class CaseGenerator : MonoBehaviour
                 }
 
                 firstIndex = 0;
+                nextIndex = 0;
                 firstIndexSet = false;
                 uniqueWeapon = false;
             }
+
+            yield return null;
+
+            int[] witnessSawOneWep = new int[amountOfCases];
+            int[] witnessOnlyWep = new int[amountOfCases];
+
+            for (int cas = 0; cas < amountOfCases; cas++)
+            {
+                for (int wep = 0; wep < solutionNumbers[cas].Count; wep += 3)
+                {
+                    if (!firstIndexSet && solutionNumbers[cas][wep + 1] == allItemsToCheck.IndexOf(witnessesToCheck[cas]))
+                    {
+                        firstIndex = solutionNumbers[cas][wep];
+                        firstIndexSet = true;
+                    }
+                    else
+                    {
+                        if (solutionNumbers[cas][wep + 1] == allItemsToCheck.IndexOf(witnessesToCheck[cas]))
+                        {
+                            nextIndex = solutionNumbers[cas][wep];
+                            if (nextIndex != firstIndex)
+                            {
+                                uniqueWeapon = true;
+                                //Debug.Log("Case " + (cas + 1) + " weapon is unique");
+                                break;
+                            }
+                        }
+                    }
+
+                    //Debug.Log("Case " + (cas + 1) + " weapon is " + wep);
+
+                    if (wep == solutionNumbers[cas].Count - 3 && !uniqueWeapon)
+                    {
+                        witnessSawOneWep[cas] = allItemsToCheck.IndexOf(witnessesToCheck[cas]);
+                        witnessOnlyWep[cas] = firstIndex;
+
+                        for (int firstWit = 0; firstWit < amountOfCases; firstWit++)
+                        {
+                            if (witnessSawOneWep[firstWit] != 0 && witnessSawOneWep[firstWit] != witnessSawOneWep[cas])
+                            {
+                                if (witnessOnlyWep[firstWit] == witnessOnlyWep[cas])
+                                {
+                                    witnessSawOneWep[cas] = 0;
+                                    witnessOnlyWep[cas] = 0;
+
+                                    //Debug.Log("Case " + (cas + 1) + " witness only has 1 weapon associated and it's the same weapon");
+                                    caseNumber = cas - 1;
+
+                                    //Debug.Log("1 Location Case is " + cas);
+
+                                    int locationIndex = weaponsToCheck.Length + witnessesToCheck.Length + cas;
+                                    int witnessIndex = weaponsToCheck.Length + cas;
+                                    //Debug.Log("1 locations to check is equal to " + locationsToCheck[cas]);
+                                    //Debug.Log("1 locationIndex is " + locationIndex + " & the true value is " + allItemsToCheck.IndexOf(locationsToCheck[cas]));
+                                    //Destroy(locationsToCheck[cas].gameObject);
+                                    //Destroy(witnessesToCheck[cas].gameObject);
+                                    //Destroy(allItemsToCheck[locationIndex]);
+                                    //Destroy(allItemsToCheck[witnessIndex]);
+                                    CreateCase();
+                                    CreateNewPrefab(caseNumber);
+                                    allItemsToCheck[locationIndex] = locationsToCheck[cas];
+                                    //Debug.Log("1 allItemsToCheck location is equal to " + allItemsToCheck[locationIndex]);
+                                    allItemsToCheck[witnessIndex] = witnessesToCheck[cas];
+                                    impossibleWitnessThere = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                firstIndex = 0;
+                nextIndex = 0;
+                firstIndexSet = false;
+                uniqueWeapon = false;
+            }
+
+            witnessSawOneWep = null;
+            witnessOnlyWep = null;
 
             yield return null;
 
@@ -2288,6 +2472,8 @@ public class CaseGenerator : MonoBehaviour
         settingsScreen.SetActive(false);
 
         radio.isPaused = false;
+
+        updateWitnesses.AddRange(witnessesToCheck);
     }
 
     private void CheckCasePossibility()
@@ -2436,9 +2622,87 @@ public class CaseGenerator : MonoBehaviour
                 }
 
                 firstIndex = 0;
+                nextIndex = 0;
                 firstIndexSet = false;
                 uniqueWeapon = false;
             }
+
+            int[] witnessSawOneWep = new int[amountOfCases];
+            int[] witnessOnlyWep = new int[amountOfCases];
+
+            for (int cas = 0; cas < amountOfCases; cas++)
+            {
+                for (int wep = 0; wep < solutionNumbers[cas].Count; wep += 3)
+                {
+                    if (!firstIndexSet && solutionNumbers[cas][wep + 1] == allItemsToCheck.IndexOf(witnessesToCheck[cas]))
+                    {
+                        firstIndex = solutionNumbers[cas][wep];
+                        firstIndexSet = true;
+                    }
+                    else
+                    {
+                        if (solutionNumbers[cas][wep + 1] == allItemsToCheck.IndexOf(witnessesToCheck[cas]))
+                        {
+                            nextIndex = solutionNumbers[cas][wep];
+                            if (nextIndex != firstIndex)
+                            {
+                                uniqueWeapon = true;
+                                //Debug.Log("Case " + (cas + 1) + " weapon is unique");
+                                break;
+                            }
+                        }
+                    }
+
+                    //Debug.Log("Case " + (cas + 1) + " weapon is " + wep);
+
+                    if (wep == solutionNumbers[cas].Count - 3 && !uniqueWeapon)
+                    {
+                        witnessSawOneWep[cas] = allItemsToCheck.IndexOf(witnessesToCheck[cas]);
+                        witnessOnlyWep[cas] = firstIndex;
+
+                        for (int firstWit = 0; firstWit < amountOfCases; firstWit++)
+                        {
+                            if (witnessSawOneWep[firstWit] != 0 && witnessSawOneWep[firstWit] != witnessSawOneWep[cas])
+                            {
+                                if (witnessOnlyWep[firstWit] == witnessOnlyWep[cas])
+                                {
+                                    witnessSawOneWep[cas] = 0;
+                                    witnessOnlyWep[cas] = 0;
+
+                                    //Debug.Log("Case " + (cas + 1) + " witness only has 1 weapon associated and it's the same weapon");
+                                    caseNumber = cas - 1;
+
+                                    //Debug.Log("1 Location Case is " + cas);
+
+                                    int locationIndex = weaponsToCheck.Length + witnessesToCheck.Length + cas;
+                                    int witnessIndex = weaponsToCheck.Length + cas;
+                                    //Debug.Log("1 locations to check is equal to " + locationsToCheck[cas]);
+                                    //Debug.Log("1 locationIndex is " + locationIndex + " & the true value is " + allItemsToCheck.IndexOf(locationsToCheck[cas]));
+                                    //Destroy(locationsToCheck[cas].gameObject);
+                                    //Destroy(witnessesToCheck[cas].gameObject);
+                                    //Destroy(allItemsToCheck[locationIndex]);
+                                    //Destroy(allItemsToCheck[witnessIndex]);
+                                    CreateCase();
+                                    CreateNewPrefab(caseNumber);
+                                    allItemsToCheck[locationIndex] = locationsToCheck[cas];
+                                    //Debug.Log("1 allItemsToCheck location is equal to " + allItemsToCheck[locationIndex]);
+                                    allItemsToCheck[witnessIndex] = witnessesToCheck[cas];
+                                    impossibleWitnessThere = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                firstIndex = 0;
+                nextIndex = 0;
+                firstIndexSet = false;
+                uniqueWeapon = false;
+            }
+
+            witnessSawOneWep = null;
+            witnessOnlyWep = null;
 
             for (int cas = 0; cas < amountOfCases; cas++)
             {
@@ -2587,6 +2851,8 @@ public class CaseGenerator : MonoBehaviour
             settingsScreen.SetActive(false);
 
             radio.isPaused = false;
+
+            updateWitnesses.AddRange(witnessesToCheck);
         }
     }
 
@@ -2606,6 +2872,7 @@ public class CaseGenerator : MonoBehaviour
             if (witnessesToCheck[i] == items[2])
             {
                 witnessIndex = allItemsToCheck.IndexOf(witnessesToCheck[i]);
+                updateWitnesses.Remove(witnessesToCheck[i]);
                 break;
             }
         }
@@ -2636,18 +2903,24 @@ public class CaseGenerator : MonoBehaviour
                 if (solutionNumbers[cas][i] == witnessIndex)
                 {
                     //Debug.Log("Step 2 count");
+                    solutionNumbers[cas][i - 1] = 1000;
                     solutionNumbers[cas][i] = 1000;
+                    solutionNumbers[cas][i + 1] = 1000;
                     solutionActivity[cas][threeStepCounter] = false;
                 }
 
                 if (solutionNumbers[cas][i] == weaponIndex)
                 {
                     solutionNumbers[cas][i] = 1000;
+                    solutionNumbers[cas][i + 1] = 1000;
+                    solutionNumbers[cas][i + 2] = 1000;
                     solutionActivity[cas][threeStepCounter] = false;
                 }
 
                 if (solutionNumbers[cas][i] == locationIndex)
                 {
+                    solutionNumbers[cas][i - 2] = 1000;
+                    solutionNumbers[cas][i - 1] = 1000;
                     solutionNumbers[cas][i] = 1000;
                     solutionActivity[cas][threeStepCounter] = false;
                 }
@@ -2667,6 +2940,33 @@ public class CaseGenerator : MonoBehaviour
             threeStepCounter = 0;
         }
 
+        bool[] impossibleWitnessDetector = new bool[amountOfCases - pageNumber - 1];
+
+        for (int cas = pageNumber + 1; cas < amountOfCases; cas++)
+        {
+            for (int wit = 0; wit < updateWitnesses.Count; wit++)
+            {
+                if (solutionNumbers[cas].Contains(allItemsToCheck.IndexOf(updateWitnesses[wit])))
+                {
+                    impossibleWitnessDetector[wit] = true;
+                }
+            }
+        }
+
+        /*
+        foreach (bool yes in impossibleWitnessDetector)
+        {
+            if(yes)
+            {
+                Debug.Log("We're so back");
+            }
+            else
+            {
+                Debug.Log("It's so over");
+            }
+        }
+        */
+
         for (int cas = pageNumber + 1; cas < amountOfCases; cas++)
         {
             hasLostLocal = true;
@@ -2679,8 +2979,34 @@ public class CaseGenerator : MonoBehaviour
                     caseSolutionCount++;
                 }
 
+                if (!impossibleWitnessDetector[cas - pageNumber - 1])
+                {
+                    hasLostLocal = true;
+                }
+
                 if (i == solutionActivity[cas].Count - 1 && hasLostLocal == true && firstLost == false)
                 {
+                    if (!impossibleWitnessDetector[cas - pageNumber - 1])
+                    {
+                        UpdateCaseWitness(updateWitnesses[cas - pageNumber - 1]);
+                        wallTextCaption.text = "Cause:";
+                        boardTexts[7].text = $"( {witnessWallText} ) no longer associates to anything";
+                    }
+                    else
+                    {
+                        woundType failVictimWound = (woundType)generatedCases[cas, 5];
+                        woundSeverity failVictimSeverity = (woundSeverity)generatedCases[cas, 6];
+                        string failWoundText = "";
+
+                        if (failVictimSeverity != woundSeverity.None)
+                            failWoundText = failVictimSeverity + " " + failVictimWound;
+                        else
+                            failWoundText = failVictimWound.ToString();
+
+                        wallTextCaption.text = $"Case {cas} Wound:";
+                        boardTexts[7].text = woundText;
+                    }
+
                     hasLost = true;
                     hasLostIndex = cas;
                     firstLost = true;
@@ -2688,6 +3014,7 @@ public class CaseGenerator : MonoBehaviour
             }
 
             //Debug.Log("Case " + (cas + 1) + " now has " + caseSolutionCount + " solutions");
+
             caseSolutionCount = 0;
         }
     }
@@ -2774,6 +3101,9 @@ public class CaseGenerator : MonoBehaviour
         {
             if (hasLost)
             {
+                GameObject evidenceBox = evidenceBoxs[pageNumber];
+                MeshRenderer evidenceBoxMesh = evidenceBox.GetComponent<MeshRenderer>();
+                evidenceBoxMesh.material = evidenceBoxMat;
                 winOrLoseText[1].SetActive(true);
                 HasLost();
                 Invoke("Lights", 1.91f);

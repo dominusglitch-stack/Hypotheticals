@@ -244,7 +244,7 @@ public class SettingsScript : MonoBehaviour
     {
         if(caseSeedInput != null)
         {
-            if (PlayerPrefs.GetInt("caseSeed") == 357764661)
+            if (PlayerPrefs.GetInt("caseSeed") == 348486610)
             {
                 caseSeedInput.text = "Tutorial";
             }
@@ -255,7 +255,7 @@ public class SettingsScript : MonoBehaviour
         }
         else if (caseSeed != null)
         {
-            if (PlayerPrefs.GetInt("caseSeed") == 357764661)
+            if (PlayerPrefs.GetInt("caseSeed") == 348486610)
             {
                 caseSeed.text = "Tutorial";
             }
